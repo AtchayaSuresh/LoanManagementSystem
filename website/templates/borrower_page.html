@@ -1,0 +1,5 @@
+{% extends "base.html" %} {% block title %}Borrowers List{% endblock %} {% block content
+    %}
+    <a href="{{url_for('auth.transaction', user=user)}}" class="btn btn-info " role="button"> Create Transaction</a>
+    <a href="{{url_for('views.transactionsList', user=user)}}" class="btn btn-info " role="button"> View Transactions List</a>
+{% endblock %}

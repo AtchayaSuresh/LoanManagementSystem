@@ -1,0 +1,73 @@
+{% extends "base.html" %} {% block title %}LOAN REPAYMENT PREDICTION{% endblock %} {% block content
+    %}
+    <form method="POST", action="{{url_for('views.loanPrediction')}}">
+        <h1 align='center'>LOAN REPAYMENT PREDICTION</h1>
+      <div class="form-group">
+        <label for="principal">Principal Amount</label>
+        <input
+          type="text"
+          class="form-control"
+          id="principal"
+          name="principal"
+          placeholder="Enter Principal Amount"
+        />
+      </div>
+      <div class="form-group">
+        <label for="terms">Terms</label>
+        <input
+          type="text"
+          class="form-control"
+          id="terms"
+          name="terms"
+          placeholder="Enter Terms"
+        />
+      </div>
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input
+          type="text"
+          class="form-control"
+          id="age"
+          name="age"
+          placeholder="Enter Age"
+        />
+      </div>
+      <div class="form-group">
+        <label for="education">Education</label>
+        <input
+          type="text"
+          class="form-control"
+          id="education"
+          name="education"
+          placeholder="Enter Education"
+        />
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <input
+          type="text"
+          class="form-control"
+          id="gender"
+          name="gender"
+          placeholder="Enter Gender"
+        />
+      </div>
+      <div class="form-group">
+        <label for="pastDueDays">Past Due Days</label>
+        <input
+          type="text"
+          class="form-control"
+          id="pastDueDays"
+          name="pastDueDays"
+          placeholder="Enter Past Due Days"
+        />
+      </div>
+      <br />
+      <div class='text-center'>
+        <button type="submit" class="btn btn-primary">PREDICT</button>
+      </div>
+      
+    </form>
+    <h2 align="center">{{pred}}</h2>
+    {% endblock %}
+    

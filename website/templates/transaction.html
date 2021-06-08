@@ -1,0 +1,40 @@
+{% extends "base.html" %} {% block title %}Create Transaction{% endblock %} {% block
+    content %}
+    <div class="container">
+      <h3 align='center'>CREATE TRANSACTION</h3>
+    </div>
+    
+    <form method="POST">
+      <div class="form-group">
+        <label for="date">Phone Number</label>
+        <input
+          type="date"
+          class="form-control"
+          id="date"
+          name="date"
+          placeholder="Enter date" required
+        />
+      </div>
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input  
+          type="text"
+          class="form-control"
+          id="amount"
+          name="amount"
+          placeholder="Enter the Amount" required
+        />
+      </div>
+      <div class="form-group ">
+        <label for="type">Address Proof</label>
+        <select name='type' id="type" class="form-control" required>
+          <option value="">Choose</option>
+          <option value="Debit">Borrowed</option>
+          <option value="Credit">Repayed</option>
+        </select>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Create Transaction</button>
+      </div>
+    </form>
+    {% endblock %}    

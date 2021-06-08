@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% block title %}Lenders List{% endblock %} {% block content
+    %}
+    {% set sum=0 %}
+    <div class="container text-center">
+      <h1 >Lender List</h1>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Email Id</th>
+            <th>Amount Borrowed</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% set sum = namespace(value=0) %}
+          {% for lender in user.lenders %}
+          <tr>
+            <td>{{lender.firstName}}</td>
+            <td>{{lender.lastName}}</td>
+            <td>{{lender.email}}</td>
+            <td>{{lender.amountBorrowed}}</td>
+            {% set sum.value=sum.value+lender.amountBorrowed %}
+            
+            <td><button type="button" class="btn btn-danger" onClick="deleteLender({{lender.id}})">
+              Delete lender
+          </button></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <h2>The total amount to be repayed is Rs. {{sum.value}}</h2>
+      <a href="{{url_for('auth.createLender')}}" class="btn btn-info " role="button">Create lender</a>
+    </div>
+  {% endblock %}
+  <!-- <form method="POST">
+    <textarea name="note" id="note" class="form-control"></textarea>
+    <br />
+    <div align="center">
+      <button type="submit" class="btn btn-primary">Add Note</button>
+    </div>
+  </form> -->
+  
