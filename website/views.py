@@ -4,24 +4,13 @@ import numpy as np
 from . import db
 import pickle
 import json
-from .models import Borrower, Lender, Transaction
+from .models import Borrower, Lender, Transaction, Users
 
 views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    # if request.method == 'POST':
-    #     note = request.form.get('note')
-
-    #     if len(note) < 1:
-    #         flash('Note is too short!', category='error')
-    #     else:
-    #         new_note = Note(data=note, user_id=current_user.id)
-    #         db.session.add(new_note)
-    #         db.session.commit()
-    #         flash('Note added!', category='success')
-    print(request.method)
     return render_template("home.html", user=current_user)
 
 @views.route('/loan-prediction', methods=['GET', 'POST'])
@@ -49,40 +38,19 @@ def loanPrediction():
 @views.route('/borrowers-list', methods=['GET', 'POST'])
 @login_required
 def borrowersList():
-    # if request.method == 'POST':
-    #     note = request.form.get('note')
-
-    #     if len(note) < 1:
-    #         flash('Note is too short!', category='error')
-    #     else:
-    #         new_note = Note(data=note, user_id=current_user.id)
-    #         db.session.add(new_note)
-    #         db.session.commit()
-    #         flash('Note added!', category='success')
-
-    return render_template("borrowersList.html", user=current_user)
+    return render_template("borrowersList.html", user=current_user, users= Users.query.filter_by(lender_id=current_user.id),
+    borrowers= Borrower.query.all())
 
 @views.route('/lenders-list', methods=['GET', 'POST'])
 @login_required
 def lendersList():
-    # if request.method == 'POST':
-    #     note = request.form.get('note')
-
-    #     if len(note) < 1:
-    #         flash('Note is too short!', category='error')
-    #     else:
-    #         new_note = Note(data=note, user_id=current_user.id)
-    #         db.session.add(new_note)
-    #         db.session.commit()
-    #         flash('Note added!', category='success')
-
-    return render_template("lendersList.html", user=current_user)
-
-
+    return render_template("lendersList.html", user=current_user, users= Users.query.filter_by(borrower_id= current_user.id)
+    ,lenders= Lender.query.all())
 
 @views.route('/transactions-list', methods=['GET', 'POST'])
 @login_required
 def transactionsList():
+    print(request.args['user'])
     return render_template("transactionsList.html",user=Borrower.query.get(request.args['user']))
 
 @views.route('/delete-borrower', methods=['POST'])

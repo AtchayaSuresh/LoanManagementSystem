@@ -18,7 +18,8 @@
 
     <title>{% block title %}Home{% endblock %}</title>
   </head>
-  <body>
+     
+  <body class="bg-image" style="background-image: url('../static/5de098d1e71edba8b16410ab4a147e4e.jpg'); background-size: cover; background-repeat: no-repeat;" >
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <button
         class="navbar-toggler"
@@ -32,7 +33,11 @@
         <div class="navbar-nav">
           {% if user.is_authenticated %}
           <p class="nav-item nav-link">{{current_user.accountType}} ID : {{current_user.id}}</p>
+          {% if user.accountType=='Lender'%}  
           <a class="nav-item nav-link" id="home" href="/">Home</a>
+          {% else %}
+          <a class="nav-item nav-link" id="lender" href="/lenders-list">Home</a>
+          {% endif %}
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
           {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>

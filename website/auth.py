@@ -2,7 +2,7 @@ import re
 import types
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug import useragents
-from .models import Borrower,Lender,Transaction
+from .models import Borrower,Lender,Transaction, Users
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -31,7 +31,7 @@ def login():
                 if check_password_hash(borrower.password, password):
                     flash('Logged in successfully!',category='success')
                     login_user(borrower,remember=True)
-                    return redirect(url_for('views.home'))
+                    return redirect(url_for('views.lendersList'))
                 else:
                     flash('Incorrect password, try again.',category='error')
             flash('Lender does not exist.', category='error')
@@ -107,7 +107,18 @@ def createBorrower():
 
         borrower = Borrower.query.filter_by(phoneNo=phoneNo).first()
         if borrower:
-            flash('Borrower already exists.', category='error')
+            users = Users.query.filter_by(lender_id = current_user.id)
+            for borrow in users:
+                if borrow.borrower_id == borrower.id:
+                    flash('Borrower already exists.', category='error')
+                    break
+            else:
+                db.session.add(borrower)
+                users=Users(lender_id=current_user.id,borrower_id = borrower.id,amount = amountBorrowed)
+                db.session.add(users)
+                db.session.commit()
+                flash('Account created!', category='success')
+                return redirect(url_for("views.borrowersList"))
         elif len(phoneNo) < 7:
             flash('Enter Valid Phone Number', category='error')
         elif len(firstName) < 2:
@@ -122,9 +133,13 @@ def createBorrower():
             newBorrower = Borrower(id=id,firstName=firstName,lastName=lastName, phoneNo=phoneNo,
             amountBorrowed=amountBorrowed,address = address, addressProof = addressProof,
             idProof = idProof, accountType='Borrower',password=generate_password_hash(
-                phoneNo, method='sha256') ,lender_id = current_user.id)
+                phoneNo, method='sha256'))
+    
             db.session.add(newBorrower)
+            users=Users(lender_id=current_user.id,borrower_id = id,amount = amountBorrowed)
+            db.session.add(users)
             db.session.commit()
+
             flash('Account created!', category='success')
             return redirect(url_for("views.borrowersList"))
     return render_template("createBorrower.html", user=current_user)
@@ -143,7 +158,7 @@ def transaction():
         amount = request.form.get('amount')
         type = request.form.get('type')
 
-        transaction = Transaction(date=date, amount=amount, type= type, borrower_id=request.args['user'])
+        transaction = Transaction(date=date, amount=amount, type= type, borrower_id=request.args['user'], lender_id = current_user.id)
         db.session.add(transaction)
         db.session.commit()
         flash('Transaction Added!',category =' success')

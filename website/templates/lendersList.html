@@ -1,37 +1,61 @@
 {% extends "base.html" %} {% block title %}Lenders List{% endblock %} {% block content
     %}
     {% set sum=0 %}
-    <div class="container text-center">
-      <h1 >Lender List</h1>
+    <div class="container text-center" style="height: 100vh;">
+      <h1 >Lenders List</h1>
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Email Id</th>
+            <th>Lender ID</th>
+            <th>Name</th>
+            <th>Phone Number</th>
             <th>Amount Borrowed</th>
             <th>Delete</th>
           </tr>
         </thead>
         <tbody>
           {% set sum = namespace(value=0) %}
-          {% for lender in user.lenders %}
+          {% for current_user in users %}
           <tr>
-            <td>{{lender.firstName}}</td>
-            <td>{{lender.lastName}}</td>
-            <td>{{lender.email}}</td>
-            <td>{{lender.amountBorrowed}}</td>
-            {% set sum.value=sum.value+lender.amountBorrowed %}
-            
-            <td><button type="button" class="btn btn-danger" onClick="deleteLender({{lender.id}})">
-              Delete lender
-          </button></td>
+            <td><a href="{{url_for('views.transactionsList', user=current_user.borrower_id)}}" role="button">{{current_user.lender_id}}</a></td>
+            {% for lender in lenders %}
+              {% if lender.id == current_user.lender_id%}
+                <td>{{lender.name}}</td>
+                <td>{{lender.phoneNo}}</td>
+
+              {% endif %}
+            {% endfor %}
+            <td>{{current_user.amount}}</td>
+            {% set sum.value=sum.value+current_user.amount %}
+          <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+            Delete Borrower
+          </button>
+          <!-- Modal -->
+          <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h2>Are you sure to delete this {{current_user.borrower_id}}?</h2>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-danger" onClick="deleteBorrower({{user.borrower_id}})">Delete Borrower</button>
+                </div>
+              </div>
+            </div>
+          </div></td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
       <h2>The total amount to be repayed is Rs. {{sum.value}}</h2>
-      <a href="{{url_for('auth.createLender')}}" class="btn btn-info " role="button">Create lender</a>
+      
     </div>
   {% endblock %}
   <!-- <form method="POST">

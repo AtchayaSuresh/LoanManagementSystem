@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block title %}Borrowers List{% endblock %} {% block content
   %}
-  <div class="container text-center">
+  <div class="container text-center " style="height: 100vh;">
     <h1 >Borrowers List</h1>
     <table class="table table-striped">
       <thead>
@@ -15,14 +15,18 @@
       </thead>
       <tbody>
         {% set sum = namespace(value=0) %}
-        {% for borrower in user.borrowers %}
+        {% for user in users %}
         <tr>
-          <td><a href="{{url_for('auth.borrower_page', user=borrower.id)}}">{{borrower.id}}</button></td>
-          <td>{{borrower.firstName}}</td>
-          <td>{{borrower.lastName}}</td>
-          <td>{{borrower.phoneNo}}</td>
-          <td>{{borrower.amountBorrowed}}</td>
-          {% set sum.value=sum.value+borrower.amountBorrowed %}
+          <td><a href="{{url_for('auth.borrower_page', user=user.borrower_id)}}">{{user.borrower_id}}</button></td>
+          {% for borrower in borrowers %}
+            {% if borrower.id == user.borrower_id%}
+              <td>{{borrower.firstName}}</td>
+              <td>{{borrower.lastName}}</td>
+              <td>{{borrower.phoneNo}}</td>
+            {% endif %}
+          {% endfor %}
+          <td>{{user.amount}}</td>
+          {% set sum.value=sum.value+user.amount %}
         <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
           Delete Borrower
         </button>
@@ -37,11 +41,11 @@
                 </button>
               </div>
               <div class="modal-body">
-                <h2>Are you sure to delete this {{borrower.firstName+" "+borrower.lastName}}?</h2>
+                <h2>Are you sure to delete the borrower with ID:{{user.borrower_id}}?</h2>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" onClick="deleteBorrower({{borrower.id}})">Delete Borrower</button>
+                <button type="button" class="btn btn-danger" onClick="deleteBorrower({{user.borrower_id}})">Delete Borrower</button>
               </div>
             </div>
           </div>

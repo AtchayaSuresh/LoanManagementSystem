@@ -1,17 +1,21 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
  %}
- {% if user.accountType=='Lender'%}
+ 
 
- <div class="d-flex justify-content-around align-items-center vh-100">
-    <a href="{{url_for('views.loanPrediction')}}" class="btn btn-info" role="button">Predict Loan Repayment</a>
-    <a href="{{url_for('auth.createBorrower')}}" class="btn btn-info" role="button">Create Borrower</a>
-    <a href="{{url_for('views.borrowersList')}}" class="btn btn-info" role="button">View Borrowers</a>
+ <div class="align-items-center d-flex flex-column">
+  <div class="d-flex flex-column justify-content-around align-items-center" style="margin: 20px; height: 570px; width: 450px; padding: 100px">
+    {% if user.accountType=='Lender'%}  
+    <a href="{{url_for('views.loanPrediction')}}" class="btn btn-info" role="button" style="font-size: 20px;">Predict Loan Repayment</a>
+    <a href="{{url_for('auth.createBorrower')}}" class="btn btn-info" role="button" style="font-size: 20px;">Create Borrower</a>
+    <a href="{{url_for('views.borrowersList')}}" class="btn btn-info" role="button" style="font-size: 20px;">View Borrowers</a>
   
-</div>
+
 {% else %}
-  <a href="{{url_for('views.lendersList')}}" class="btn btn-info" role="button">View Borrowers</a>
+  <a href="{{url_for('views.lendersList')}}" class="btn btn-info" role="button" style="font-size: 20px;">View Borrowers</a>
   
 {% endif %}
+</div>
+</div>
 <!--<h1 align="center">Notes</h1>
 <ul class="list-group list-group-flush" id="notes">
   {% for note in user.notes %}

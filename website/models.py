@@ -3,10 +3,17 @@ from . import db
 from flask_login import UserMixin
 #from sqlalchemy.sql import func
 
-users=db.Table('users',
-db.Column('lender_id',db.String(5),db.ForeignKey('lender.id')),
-db.Column('borrower_id',db.String(5),db.ForeignKey('borrower.id'))
-)
+# users=db.Table('User',
+# db.Column('lender_id',db.String(5),db.ForeignKey('lender.id')),
+# db.Column('borrower_id',db.String(5),db.ForeignKey('borrower.id')),
+# db.Column('amount',db.Float)
+# )
+
+class Users(db.Model,UserMixin):
+    id= db.Column(db.Integer, primary_key = True)
+    lender_id=db.Column(db.String(5),db.ForeignKey('lender.id'))
+    borrower_id=db.Column(db.String(5),db.ForeignKey('borrower.id'))
+    amount=db.Column(db.Float)
 # class Note(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
 #     data = db.Column(db.String(10000))
@@ -35,7 +42,7 @@ class Lender(db.Model, UserMixin):
     accountType = db.Column(db.String(15))
     
     # borrowers =  db.relationship('Borrower',secondary=users, backref=db.backref('lenders', lazy= 'dynamic'))
-    lenders = db.relationship('Lender')
+    #lenders = db.relationship('Lender')
     #notes = db.relationship('Note')
 
 class Borrower(db.Model,UserMixin):
@@ -52,7 +59,7 @@ class Borrower(db.Model,UserMixin):
     idProof = db.Column(db.String(20))
     accountType = db.Column(db.String(15))
 
-    lender_id = db.Column(db.String(5), db.ForeignKey('lender.id'))
+    # lender_id = db.Column(db.String(5), db.ForeignKey('lender.id'))
     transactions = db.relationship('Transaction')
 
 class Transaction(db.Model):
@@ -61,3 +68,4 @@ class Transaction(db.Model):
     amount = db.Column(db.Float)
     type= db.Column(db.String(5))
     borrower_id = db.Column(db.String(5),db.ForeignKey('borrower.id'))
+    lender_id = db.Column(db.String(5),db.ForeignKey('lender.id'))
