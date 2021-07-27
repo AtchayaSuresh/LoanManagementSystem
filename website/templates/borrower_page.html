@@ -1,11 +1,26 @@
-{% extends "base.html" %} {% block title %}Borrowers List{% endblock %} {% block content
-    %}
-    {{user.id}}
-    <div class="align-items-center d-flex flex-column">
-        <div class="d-flex flex-column justify-content-around align-items-center" style="height: 100vh; padding: 200px;">
-        
-    <a href="{{url_for('auth.transaction', user=user)}}" class="btn btn-info " style="font-size: 25px;" role="button"> Create Transaction</a>
-    <a href="{{url_for('views.transactionsList', user=user)}}" class="btn btn-info " style="font-size: 25px;" role="button"> View Transactions List</a>
-    </div>
-    </div>
+{% extends "base.html" %} {% block title %}Borrowers List{% endblock %} {% block
+content %} {{user.id}}
+<div class="align-items-center d-flex flex-column">
+  <div
+    class="d-flex flex-column justify-content-around align-items-center"
+    style="height: 100vh; padding: 200px"
+  >
+    <a
+      href="{{url_for('auth.transaction', user=user)}}"
+      class="btn btn-info"
+      style="font-size: 25px"
+      role="button"
+    >
+      Create Transaction</a
+    >
+    <a
+      href="{{url_for('views.transactionsList', user=user)}}"
+      class="btn btn-info"
+      style="font-size: 25px"
+      role="button"
+    >
+      View Transactions List</a
+    >
+  </div>
+</div>
 {% endblock %}

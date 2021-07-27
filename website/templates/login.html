@@ -1,30 +1,32 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
 %}
-<div style="height: 100vh;">
-<form method="POST">
-  <h3 align="center">Login</h3>
-  <div class="form-group">
-    <label for="id">ID</label>
-    <input
-      type="text"
-      class="form-control"
-      id="id"
-      name="id"
-      placeholder="Enter Your ID" required
-    />
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input
-      type="password"
-      class="form-control"
-      id="password"
-      name="password"
-      placeholder="Enter password" required
-    />
-  </div>
-  <br />
-  <button type="submit" class="btn btn-primary">Login</button>
-</form>
+<div style="height: 100vh">
+  <form method="POST">
+    <h3 align="center">Login</h3>
+    <div class="form-group">
+      <label for="id">ID</label>
+      <input
+        type="text"
+        class="form-control"
+        id="id"
+        name="id"
+        placeholder="Enter Your ID"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        placeholder="Enter password"
+        required
+      />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
 </div>
 {% endblock %}

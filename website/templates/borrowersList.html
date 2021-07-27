@@ -1,62 +1,104 @@
-{% extends "base.html" %} {% block title %}Borrowers List{% endblock %} {% block content
-  %}
-  <div class="container text-center " style="height: 100vh;">
-    <h1 >Borrowers List</h1>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Borrower ID</th>
-          <th>Firstname</th>
-          <th>Lastname</th>
-          <th>Phone Number</th>
-          <th>Amount Borrowed</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% set sum = namespace(value=0) %}
-        {% for user in users %}
-        <tr>
-          <td><a href="{{url_for('auth.borrower_page', user=user.borrower_id)}}">{{user.borrower_id}}</button></td>
-          {% for borrower in borrowers %}
-            {% if borrower.id == user.borrower_id%}
-              <td>{{borrower.firstName}}</td>
-              <td>{{borrower.lastName}}</td>
-              <td>{{borrower.phoneNo}}</td>
-            {% endif %}
-          {% endfor %}
-          <td>{{user.amount}}</td>
-          {% set sum.value=sum.value+user.amount %}
-        <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-          Delete Borrower
-        </button>
-        <!-- Modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <h2>Are you sure to delete the borrower with ID:{{user.borrower_id}}?</h2>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" onClick="deleteBorrower({{user.borrower_id}})">Delete Borrower</button>
+{% extends "base.html" %} {% block title %}Borrowers List{% endblock %} {% block
+content %}
+<div class="container text-center" style="height: 100vh">
+  <h1>Borrowers List</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Borrower ID</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Phone Number</th>
+        <th>Amount Borrowed</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% set sum = namespace(value=0) %} {% for user in users %}
+      <tr>
+        <td>
+          <a href="{{url_for('auth.borrower_page', user=user.borrower_id)}}"
+            >{{user.borrower_id}}</a
+          >
+        </td>
+        {% for borrower in borrowers %} {% if borrower.id == user.borrower_id%}
+        <td>{{borrower.firstName}}</td>
+        <td>{{borrower.lastName}}</td>
+        <td>{{borrower.phoneNo}}</td>
+        {% endif %} {% endfor %}
+        <td>{{user.amount}}</td>
+        {% set sum.value=sum.value+user.amount %}
+        <td>
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-toggle="modal"
+            data-target="#deleteModal"
+          >
+            Delete Borrower
+          </button>
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="deleteModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Confirm Delete
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h2>
+                    Are you sure to delete the borrower with
+                    ID:{{user.borrower_id}}?
+                  </h2>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    onClick="deleteBorrower({{user.borrower_id}})"
+                  >
+                    Delete Borrower
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <h2>The total amount to be repayed is Rs. {{sum.value}}</h2>
-    <a href="{{url_for('auth.createBorrower')}}" class="btn btn-info " role="button">Create Borrower</a>
-  </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <h2>The total amount to be repayed is Rs. {{sum.value}}</h2>
+  <a
+    href="{{url_for('auth.createBorrower')}}"
+    class="btn btn-info"
+    role="button"
+    >Create Borrower</a
+  >
+</div>
 {% endblock %}
 <!-- <form method="POST">
   <textarea name="note" id="note" class="form-control"></textarea>
