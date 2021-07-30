@@ -4,7 +4,8 @@ import numpy as np
 from . import db
 import pickle
 import json
-from .models import Borrower, Lender, Transaction, Users
+from datetime import date
+from .models import Borrower, Lender, Transaction, User
 
 views = Blueprint('views', __name__)
 
@@ -38,31 +39,38 @@ def loanPrediction():
 @views.route('/borrowers-list', methods=['GET', 'POST'])
 @login_required
 def borrowersList():
-    return render_template("borrowersList.html", user=current_user, users= Users.query.filter_by(lender_id=current_user.id),
-    borrowers= Borrower.query.all())
+    users= User.query.filter_by(lender_id=current_user.id)
+    borrowers= Borrower.query.all()
+    currentMonth = date.today().month
+    for user in users:
+        print(user.previousMonth,currentMonth)
+        user.amount += ((currentMonth - user.previousMonth)*user.principal*0.01*user.interest)
+        user.previousMonth = currentMonth
+        db.session.commit()
+    return render_template("borrowersList.html", user=current_user, users = users, borrowers = borrowers)
 
 @views.route('/lenders-list', methods=['GET', 'POST'])
 @login_required
 def lendersList():
-    return render_template("lendersList.html", user=current_user, users= Users.query.filter_by(borrower_id= current_user.id)
+    return render_template("lendersList.html", user=current_user, users= User.query.filter_by(borrower_id= current_user.id)
     ,lenders= Lender.query.all())
 
 @views.route('/transactions-list', methods=['GET', 'POST'])
 @login_required
 def transactionsList():
-    print(request.args['user'])
-    return render_template("transactionsList.html",user=Borrower.query.get(request.args['user']))
+    return render_template("transactionsList.html",lenderId =request.args['lender'],
+    user = current_user, borrower = Borrower.query.get(request.args['borrower']))
 
 @views.route('/delete-borrower', methods=['POST'])
 def deleteBorrower():
     borrower = json.loads(request.data)
-    borrowerId = borrower['borrowerId']
-    borrower = Borrower.query.get(borrowerId)
+    borrowerId = str(borrower['borrowerId'])
+    borrowerId=(5-len(borrowerId))*'0'+borrowerId
+    borrower = User.query.filter_by(borrower_id = borrowerId, lender_id = current_user.id).first()
+    
     if borrower:
-        print(borrower.lender_id,current_user.id)
-        if borrower.lender_id == current_user.id:
-            db.session.delete(borrower)
-            db.session.commit()
+        db.session.delete(borrower)
+        db.session.commit()
 
     return jsonify({})
 
@@ -70,11 +78,17 @@ def deleteBorrower():
 def deleteTransaction():
     transaction = json.loads(request.data)
     transactionId = transaction['transactionId']
-    userId = transaction['userId']
+    borrowerId = transaction['borrowerId']
+    lenderId = transaction['lenderId']
+     
     transaction = Transaction.query.get(transactionId)
     if transaction:
-        if transaction.borrower_id == str(userId):
-            print(transaction.borrower_id, userId)
+        if transaction.borrower_id == str(borrowerId):
+            borrower = User.query.filter_by(lender_id = lenderId, borrower_id = borrowerId).first()
+            if transaction.type == 'Borrowed':
+                borrower.amount-=transaction.amount
+            else:
+                borrower.amount+=transaction.amount
             db.session.delete(transaction)
             db.session.commit()
 

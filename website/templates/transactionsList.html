@@ -13,8 +13,14 @@ content %}
       </tr>
     </thead>
     <tbody>
-      Borrower Id: {{user.id}} {% for transaction in user.transactions %}
+      {% if user.accountType == 'Lender' %}
+      Borrower Id: {{borrower.id}} 
+      {% else %}
+      Lender Id: {{lenderId}}
+      {% endif %}
+      {% for transaction in borrower.transactions %}
       <tr>
+        {% if lenderId == transaction.lender_id %}
         <td>{{transaction.id}}</td>
         <td>{{transaction.date}}</td>
         <td>{{transaction.amount}}</td>
@@ -70,7 +76,7 @@ content %}
                   <button
                     type="button"
                     class="btn btn-danger"
-                    onClick="deleteTransaction({{transaction.id}},{{user.id}})"
+                    onClick="deleteTransaction({{transaction.id}},{{borrower.id}},{{lenderId}})"
                   >
                     Delete Transaction
                   </button>
@@ -79,13 +85,15 @@ content %}
             </div>
           </div>
         </td>
+        {% endif %}
       </tr>
-      {% endif %} {% endfor %}
+      {% endif %}
+      {% endfor %}
     </tbody>
   </table>
   {% if user.accountType=='Lender'%}
   <a
-    href="{{url_for('auth.transaction',user=user.id)}}"
+    href="{{url_for('auth.transaction',borrower=borrower.id, lender = lenderId)}}"
     class="btn btn-info"
     role="button"
     >Create Transaction</a

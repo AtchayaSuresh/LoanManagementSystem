@@ -6,28 +6,32 @@ content %}
     <thead>
       <tr>
         <th>Borrower ID</th>
-        <th>Firstname</th>
-        <th>Lastname</th>
+        <th>Name</th>
         <th>Phone Number</th>
-        <th>Amount Borrowed</th>
+        <th>Principal</th>
+        <th>Due Amount</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
-      {% set sum = namespace(value=0) %} {% for user in users %}
-      <tr>
-        <td>
-          <a href="{{url_for('auth.borrower_page', user=user.borrower_id)}}"
-            >{{user.borrower_id}}</a
-          >
-        </td>
-        {% for borrower in borrowers %} {% if borrower.id == user.borrower_id%}
-        <td>{{borrower.firstName}}</td>
-        <td>{{borrower.lastName}}</td>
-        <td>{{borrower.phoneNo}}</td>
-        {% endif %} {% endfor %}
-        <td>{{user.amount}}</td>
-        {% set sum.value=sum.value+user.amount %}
+      {% set sum = namespace(value=0) %} 
+      {% for user in users %}
+        <tr>
+          <td>
+            <a href="{{url_for('auth.borrower_page', borrower=user.borrower_id, lender = user.lender_id)}}"
+              >{{user.borrower_id}}</a
+            >
+          </td>
+          {% for borrower in borrowers %} 
+            {% if borrower.id == user.borrower_id%}
+              
+              <td>{{borrower.firstName+borrower.lastName}}</td>
+              <td>{{borrower.phoneNo}}</td>
+              <td>{{user.principal}}</td>
+              <td>{{user.amount}}</td>
+              {% set sum.value=sum.value+user.amount %}
+            {% endif %} 
+          {% endfor %}
         <td>
           <button
             type="button"
@@ -91,7 +95,7 @@ content %}
       {% endfor %}
     </tbody>
   </table>
-  <h2>The total amount to be repayed is Rs. {{sum.value}}</h2>
+  <h2>The total amount to be received this month is Rs. {{sum.value}}</h2>
   <a
     href="{{url_for('auth.createBorrower')}}"
     class="btn btn-info"
@@ -100,10 +104,3 @@ content %}
   >
 </div>
 {% endblock %}
-<!-- <form method="POST">
-  <textarea name="note" id="note" class="form-control"></textarea>
-  <br />
-  <div align="center">
-    <button type="submit" class="btn btn-primary">Add Note</button>
-  </div>
-</form> -->

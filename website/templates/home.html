@@ -7,56 +7,36 @@
     style="margin: 20px; height: 570px; width: 450px; padding: 100px"
   >
     {% if user.accountType=='Lender'%}
-    <a
-      href="{{url_for('views.loanPrediction')}}"
-      class="btn btn-info"
-      role="button"
-      style="font-size: 20px"
-      >Predict Loan Repayment</a
-    >
-    <a
-      href="{{url_for('auth.createBorrower')}}"
-      class="btn btn-info"
-      role="button"
-      style="font-size: 20px"
-      >Create Borrower</a
-    >
-    <a
-      href="{{url_for('views.borrowersList')}}"
-      class="btn btn-info"
-      role="button"
-      style="font-size: 20px"
-      >View Borrowers</a
-    >
-
+      <a
+        href="{{url_for('views.loanPrediction')}}"
+        class="btn btn-info"
+        role="button"
+        style="font-size: 20px"
+        >Predict Loan Repayment</a
+      >
+      <a
+        href="{{url_for('auth.createBorrower')}}"
+        class="btn btn-info"
+        role="button"
+        style="font-size: 20px"
+        >Create Borrower</a
+      >
+      <a
+        href="{{url_for('views.borrowersList')}}"
+        class="btn btn-info"
+        role="button"
+        style="font-size: 20px"
+        >View Borrowers</a
+      >
     {% else %}
-    <a
-      href="{{url_for('views.lendersList')}}"
-      class="btn btn-info"
-      role="button"
-      style="font-size: 20px"
-      >View Borrowers</a
-    >
-
+      <a
+        href="{{url_for('views.lendersList')}}"
+        class="btn btn-info"
+        role="button"
+        style="font-size: 20px"
+        >View Borrowers</a
+      >
     {% endif %}
   </div>
 </div>
-<!--<h1 align="center">Notes</h1>
-<ul class="list-group list-group-flush" id="notes">
-  {% for note in user.notes %}
-  <li class="list-group-item">
-    {{ note.data }}
-    <button type="button" class="close" onClick="deleteNote({{ note.id }})">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </li>
-  {% endfor %}
-</ul>
-<form method="POST">
-  <textarea name="note" id="note" class="form-control"></textarea>
-  <br />
-  <div align="center">
-    <button type="submit" class="btn btn-primary">Add Note</button>
-  </div>
-</form> -->
 {% endblock %}

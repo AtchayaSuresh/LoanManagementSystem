@@ -7,12 +7,12 @@ function deleteBorrower(borrowerId) {
   });
 }
 
-function deleteTransaction(transactionId, userId) {
+function deleteTransaction(transactionId, borrowerId, lenderId) {
   console.log(transactionId);
   fetch("/delete-transaction", {
     method: "POST",
-    body: JSON.stringify({ transactionId: transactionId, userId: userId }),
+    body: JSON.stringify({ transactionId: transactionId, borrowerId: borrowerId, lenderId: lenderId }),
   }).then((_res) => {
-    window.location.href = "/transactions-list?user=" + userId;
+    window.location.href = "/transactions-list?borrower=" + borrowerId +"&lender="+lenderId;
   });
 }

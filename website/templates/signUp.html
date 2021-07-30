@@ -18,7 +18,7 @@ content %}
     <div class="form-group">
       <label for="phoneNo">Phone Number</label>
       <input
-        type="text"
+        type="phoneNo"
         class="form-control"
         id="phoneNo"
         name="phoneNo"
@@ -86,6 +86,10 @@ content %}
       </select>
     </div>
     <div class="form-group">
+      <label for="addressProofUpload">Upload Address Proof</label>
+      <input type="file" id="addressProofUpload" name="addressProofUpload" required>
+    </div>
+    <div class="form-group">
       <label for="idProof">ID Proof</label>
       <select name="idProof" id="idProof" class="form-control" required>
         <option selected>Choose</option>
@@ -94,6 +98,10 @@ content %}
         <option>Driving License</option>
         <option>Pan Card</option>
       </select>
+    </div>
+    <div class="form-group">
+      <label for="idProofUpload">Upload ID Proof</label>
+      <input type="file" id="idProofUpload" name="idProofUpload" required>
     </div>
     <div class="form-group">
       <label for="password1">Password</label>
